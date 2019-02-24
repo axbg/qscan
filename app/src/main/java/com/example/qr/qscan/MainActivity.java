@@ -1,4 +1,4 @@
-package com.example.qr.qscanit;
+package com.example.qr.qscan;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

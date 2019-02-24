@@ -1,4 +1,4 @@
-package com.example.qr.qscanit;
+package com.example.qr.qscan;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.qr.qscanit", appContext.getPackageName());
+        assertEquals("com.example.qr.qscan", appContext.getPackageName());
     }
 }

@@ -1,4 +1,4 @@
-package com.example.qr.qscanit;
+package com.example.qr.qscan;
 
 import org.junit.Test;
 
