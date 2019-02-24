@@ -1,16 +1,22 @@
 package com.example.qr.qscan;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.service.autofill.TextValueSanitizer;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private CameraSource cameraSource;
     private TextView textView;
     private BarcodeDetector barcodeDetector;
+    private Boolean shouldDetect = false;
+    private final int REQUEST_PERMISSION_CAMERA = 1;
+    private Button detect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +44,48 @@ public class MainActivity extends AppCompatActivity {
         initActivity();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initActivity(){
-        this.barcodeDetector = new BarcodeDetector.Builder(this)
-                                .setBarcodeFormats(Barcode.QR_CODE).build();
 
-        this.cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                                .setRequestedPreviewSize(640, 480).build();
 
         this.textView = findViewById(R.id.main_tv_qr);
+
+        this.detect = findViewById(R.id.main_btn_detect);
+
+        this.detect.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch(event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        shouldDetect = true;
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        shouldDetect = false;
+                        break;
+                }
+                return false;
+            }
+        });
+
+        if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,
+                    new String[] {Manifest.permission.CAMERA}, REQUEST_PERMISSION_CAMERA);
+        } else {
+            initCamera();
+        }
+    }
+
+    private void initCamera(){
+        this.barcodeDetector = new BarcodeDetector.Builder(this)
+                .setBarcodeFormats(Barcode.QR_CODE).build();
+
+        this.cameraSource = new CameraSource.Builder(this, barcodeDetector)
+                .setRequestedPreviewSize(640, 480).build();
+
         this.surfaceView = findViewById(R.id.main_surface_view);
+
+        this.surfaceView.setVisibility(View.VISIBLE);
 
         this.surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -51,7 +93,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if(ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA)
                         != PackageManager.PERMISSION_GRANTED){
-                    Toast.makeText(getApplicationContext(), "Camera not permitted", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -82,25 +123,35 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
-                final SparseArray<Barcode> qrCode = detections.getDetectedItems();
+                if(shouldDetect) {
+                    shouldDetect = false;
+                    final SparseArray<Barcode> qrCode = detections.getDetectedItems();
 
-                if(qrCode.size() != 0){
-                    textView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            Vibrator vibrator = (Vibrator)getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
-                            vibrator.vibrate(1000);
-                            textView.setText(qrCode.valueAt(0).displayValue);
-                        }
-                    });
+                    if (qrCode.size() != 0) {
+                        textView.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+                                vibrator.vibrate(200);
+                                textView.setText(qrCode.valueAt(0).displayValue);
+                            }
+                        });
+                    }
                 }
             }
         });
     }
-}
 
-// create a button
-// as long as it's pressed sets a variable to true (View.onTouchListener)
-// when it's released, the variable is false
-// when the barcode detects something, it will run logic only if the variable is true
-//should work nice, eh?
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_PERMISSION_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                this.initCamera();
+            }
+        }
+    }
+
+
+
+}
