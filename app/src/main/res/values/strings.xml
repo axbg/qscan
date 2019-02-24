@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">QScan</string>
+    <string name="main_tv_qr_empty">Nothing detected</string>
 </resources>
