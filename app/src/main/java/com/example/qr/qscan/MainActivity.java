@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 .setBarcodeFormats(Barcode.QR_CODE).build();
 
         this.cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640, 480).build();
+                .setRequestedPreviewSize(640, 520).build();
 
         this.surfaceView = findViewById(R.id.main_surface_view);
 

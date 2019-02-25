@@ -2,4 +2,8 @@
     <string name="app_name">QScan</string>
     <string name="main_tv_qr_empty">Nothing detected</string>
     <string name="main_btn_detect">Detect QR</string>
+    <string name="login_username_tie">Username</string>
+    <string name="login_password_tie">Password</string>
+    <string name="login_logo_image">SpringIT Logo</string>
+    <string name="login_btn">Login</string>
 </resources>
