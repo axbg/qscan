@@ -2,11 +2,10 @@ package com.example.qr.qscan;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
-import android.service.autofill.TextValueSanitizer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
@@ -36,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private Boolean shouldDetect = false;
     private final int REQUEST_PERMISSION_CAMERA = 1;
     private Button detect;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("ClickableViewAccessibility")
     private void initActivity(){
 
+        Intent intent = getIntent();
+        //populate token from intent
 
         this.textView = findViewById(R.id.main_tv_qr);
 

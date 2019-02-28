@@ -6,4 +6,5 @@
     <string name="login_password_tie">Password</string>
     <string name="login_logo_image">SpringIT Logo</string>
     <string name="login_btn">Login</string>
+    <string name="main_tv_response"/>
 </resources>

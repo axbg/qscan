@@ -19,13 +19,15 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38">
+        app:layout_constraintVertical_bias="0.43">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/login_username_tie"
-            android:layout_width="match_parent"
+            android:layout_width="316dp"
             android:layout_height="wrap_content"
-            android:hint="@string/login_username_tie" />
+            android:layout_marginStart="40dp"
+            android:hint="@string/login_username_tie"
+            android:textColor="@color/springColorAccent" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
@@ -40,20 +42,22 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_username_til"
-        app:layout_constraintVertical_bias="0.121">
+        app:layout_constraintVertical_bias="0.184">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/login_password_tie"
-            android:layout_width="match_parent"
+            android:layout_width="315dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
             android:hint="@string/login_password_tie"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/springColorAccent" />
     </android.support.design.widget.TextInputLayout>
 
     <ImageView
         android:id="@+id/login_logo_img"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="226dp"
+        android:layout_height="161dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -61,24 +65,26 @@
         android:contentDescription="@string/login_logo_image"
         app:layout_constraintBottom_toTopOf="@+id/login_username_til"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_launcher_round" />
+        app:layout_constraintVertical_bias="0.692"
+        app:srcCompat="@drawable/logo" />
 
     <Button
         android:id="@+id/login_btn"
-        android:layout_width="124dp"
-        android:layout_height="wrap_content"
+        android:layout_width="143dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="@string/login_btn"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_password_til"
-        app:layout_constraintVertical_bias="0.344" />
+        app:layout_constraintVertical_bias="0.453" />
 
 </android.support.constraint.ConstraintLayout>

@@ -3,4 +3,7 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="springColorPrimary">#C1DCF3</color>
+    <color name="springColorAccent">#13649F</color>
+    <color name="springColorAccentLight">#3DA0D1</color>
 </resources>
