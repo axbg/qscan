@@ -132,6 +132,9 @@ public class MainActivity extends AppCompatActivity {
                         textView.post(new Runnable() {
                             @Override
                             public void run() {
+
+                                //rest call here
+
                                 Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                                 vibrator.vibrate(200);
                                 textView.setText(qrCode.valueAt(0).displayValue);
