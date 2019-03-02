@@ -17,24 +17,32 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.qr.qscan.constant.Constant;
+import com.example.qr.qscan.network.HTTPManager;
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements Constant {
 
     private SurfaceView surfaceView;
     private CameraSource cameraSource;
-    private TextView textView;
+    private TextView qrTextView;
+    private TextView responseTextView;
     private BarcodeDetector barcodeDetector;
     private Boolean shouldDetect = false;
     private final int REQUEST_PERMISSION_CAMERA = 1;
     private Button detect;
     private String token;
+    private HTTPManager httpManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private void initActivity(){
 
         Intent intent = getIntent();
-        //populate token from intent
+        token = intent.getStringExtra(CREDENTIALS);
 
-        this.textView = findViewById(R.id.main_tv_qr);
+        this.qrTextView = findViewById(R.id.main_tv_qr);
+        this.responseTextView = findViewById(R.id.main_tv_response);
 
         this.detect = findViewById(R.id.main_btn_detect);
 
@@ -129,15 +138,47 @@ public class MainActivity extends AppCompatActivity {
                     final SparseArray<Barcode> qrCode = detections.getDetectedItems();
 
                     if (qrCode.size() != 0) {
-                        textView.post(new Runnable() {
+                        qrTextView.post(new Runnable() {
+                            @SuppressLint("StaticFieldLeak")
                             @Override
                             public void run() {
 
-                                //rest call here
+                                httpManager = new HTTPManager(){
+                                    @Override
+                                    protected void onPostExecute(String s) {
+                                        try {
+                                            JSONObject obj = new JSONObject(s);
+                                            String message = obj.getString("message");
+
+                                            //check if returned message is ok
+                                            //circle loader removed
+
+                                            responseTextView.setText(message);
+
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                };
 
                                 Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
                                 vibrator.vibrate(200);
-                                textView.setText(qrCode.valueAt(0).displayValue);
+
+                                String qrURL = qrCode.valueAt(0).displayValue;
+
+                                if(qrURL.contains("https://scanit.sisc.ro")){
+
+                                    //add REST to the decoded url
+                                    String RESTURL = "asd";
+
+                                    //a circle loader can be added here
+                                    httpManager.execute(RESTURL, GET, token);
+
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "QRCode recognized",
+                                            Toast.LENGTH_SHORT).show();
+                                }
                             }
                         });
                     }
