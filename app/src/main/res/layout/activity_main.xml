@@ -68,4 +68,30 @@
         app:layout_constraintTop_toBottomOf="@+id/main_tv_qr"
         app:layout_constraintVertical_bias="0.24" />
 
+    <ImageView
+        android:id="@+id/main_logout_img"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/main_logout_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_btn_detect"
+        app:srcCompat="@android:drawable/ic_lock_power_off" />
+
+    <ImageView
+        android:id="@+id/main_load_img"
+        android:layout_width="400dp"
+        android:layout_height="446dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="264dp"
+        android:contentDescription="@string/main_load_img"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/load" />
+
 </android.support.constraint.ConstraintLayout>

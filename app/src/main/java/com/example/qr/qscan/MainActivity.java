@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
 import android.support.annotation.NonNull;
@@ -16,6 +17,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,12 +45,25 @@ public class MainActivity extends AppCompatActivity implements Constant {
     private Button detect;
     private String token;
     private HTTPManager httpManager;
+    private ImageView logoutImg;
+    private ImageView loadImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initActivity();
+    }
+
+    private void logout(){
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES,
+                MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(TOKEN_PREFERENCE);
+        editor.apply();
+
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        finish();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -59,6 +74,15 @@ public class MainActivity extends AppCompatActivity implements Constant {
 
         this.qrTextView = findViewById(R.id.main_tv_qr);
         this.responseTextView = findViewById(R.id.main_tv_response);
+        this.loadImg = findViewById(R.id.main_load_img);
+
+        this.logoutImg = findViewById(R.id.main_logout_img);
+        this.logoutImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
 
         this.detect = findViewById(R.id.main_btn_detect);
 
@@ -150,15 +174,14 @@ public class MainActivity extends AppCompatActivity implements Constant {
                                             JSONObject obj = new JSONObject(s);
                                             String message = obj.getString("message");
 
-                                            //check if returned message is ok
-                                            //circle loader removed
-
+                                            loadImg.setVisibility(View.INVISIBLE);
                                             responseTextView.setText(message);
 
                                         } catch (JSONException e) {
+                                            Toast.makeText(getApplicationContext(), "Some error in response",
+                                                    Toast.LENGTH_SHORT).show();
                                             e.printStackTrace();
                                         }
-
                                     }
                                 };
 
@@ -169,14 +192,13 @@ public class MainActivity extends AppCompatActivity implements Constant {
 
                                 if(qrURL.contains("https://scanit.sisc.ro")){
 
-                                    //add REST to the decoded url
-                                    String RESTURL = "asd";
-
-                                    //a circle loader can be added here
-                                    httpManager.execute(RESTURL, GET, token);
+                                    String newURL = BASE_URL_REST + qrURL.substring(34);
+                                    responseTextView.setText("");
+                                    loadImg.setVisibility(View.VISIBLE);
+                                    httpManager.execute(newURL, GET, token);
 
                                 } else {
-                                    Toast.makeText(getApplicationContext(), "QRCode recognized",
+                                    Toast.makeText(getApplicationContext(), "QRCode not recognized",
                                             Toast.LENGTH_SHORT).show();
                                 }
                             }

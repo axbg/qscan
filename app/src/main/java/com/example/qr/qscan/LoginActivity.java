@@ -2,6 +2,7 @@ package com.example.qr.qscan;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,7 +27,23 @@ public class LoginActivity extends AppCompatActivity implements Constant {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        persistentLoginCheck();
         init();
+    }
+
+    private void persistentLoginCheck(){
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES,
+                MODE_PRIVATE);
+
+        String token = sharedPreferences.getString(TOKEN_PREFERENCE, "");
+
+        if(!token.equals("")) {
+            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent.putExtra(CREDENTIALS, token);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private void init(){
@@ -47,7 +64,11 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                                 JSONObject obj = new JSONObject(s);
                                 String token = obj.getString("token");
 
-                                //check if message is correct
+                                SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES,
+                                        MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString(TOKEN_PREFERENCE, token);
+                                editor.apply();
 
                                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                 intent.putExtra(CREDENTIALS, token);
@@ -68,8 +89,11 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                     httpManager.execute(LOGIN_URL, POST, NO_AUTH, JSONCredentials);
 
                 } else {
-                    //a much complete verification with focus on empty fields
-                    Toast.makeText(getApplicationContext(), "insert credentials pls", Toast.LENGTH_SHORT).show();
+                    if(username.getText().toString().equals("")){
+                        username.requestFocus();
+                    } else if(password.getText().toString().equals("")){
+                        password.requestFocus();
+                    }
                 }
             }
         });

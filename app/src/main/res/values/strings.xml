@@ -7,4 +7,7 @@
     <string name="login_logo_image">SpringIT Logo</string>
     <string name="login_btn">Login</string>
     <string name="main_tv_response"/>
+    <string name="main_logout_img">Logout Image</string>
+    <string name="main" />
+    <string name="main_load_img">Loading</string>
 </resources>
