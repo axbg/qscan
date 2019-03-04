@@ -10,4 +10,5 @@
     <string name="main_logout_img">Logout Image</string>
     <string name="main" />
     <string name="main_load_img">Loading</string>
+    <string name="main_qr_corner">QR Corner</string>
 </resources>

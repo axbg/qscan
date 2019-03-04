@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
             android:hint="@string/login_username_tie"
+            android:singleLine="true"
             android:textColor="@color/springColorAccent" />
     </android.support.design.widget.TextInputLayout>
 
@@ -51,6 +52,7 @@
             android:layout_marginStart="40dp"
             android:hint="@string/login_password_tie"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:textColor="@color/springColorAccent" />
     </android.support.design.widget.TextInputLayout>
 

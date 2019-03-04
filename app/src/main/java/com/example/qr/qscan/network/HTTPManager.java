@@ -1,6 +1,7 @@
 package com.example.qr.qscan.network;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.qr.qscan.constant.Constant;
 
@@ -41,6 +42,7 @@ public class HTTPManager extends AsyncTask<String, String, String> implements Co
                     connection.setRequestMethod("GET");
                     break;
                 case POST:
+                    connection.setRequestProperty("Content-Type", "application/json");
                     connection.setRequestMethod("POST");
                     connection.setDoInput(true);
                     OutputStream out = connection.getOutputStream();
@@ -74,6 +76,7 @@ public class HTTPManager extends AsyncTask<String, String, String> implements Co
             e.printStackTrace();
         }
 
+        Log.e("eroare", builder.toString());
         return builder.toString();
     }
 }

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -61,7 +62,9 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                         @Override
                         protected void onPostExecute(String s) {
                             try {
+
                                 JSONObject obj = new JSONObject(s);
+
                                 String token = obj.getString("token");
 
                                 SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES,
@@ -76,15 +79,15 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                                 finish();
 
                             } catch (JSONException e) {
-                                Toast.makeText(getApplicationContext(), "Credentials not good or other err",
+                                Toast.makeText(getApplicationContext(), "Credentials not good or server down",
                                         Toast.LENGTH_SHORT).show();
-                                e.printStackTrace();
+                                Log.e("nasty_error", e.toString());
                             }
                         }
                     };
 
-                    String JSONCredentials = "{\"username\":\"" + username + "\", " +
-                            "\"password\":\"" + password + "\"}";
+                    String JSONCredentials = "{\"username\":\"" + username.getText().toString() + "\", " +
+                            "\"password\":\"" + password.getText().toString() + "\"}";
 
                     httpManager.execute(LOGIN_URL, POST, NO_AUTH, JSONCredentials);
 

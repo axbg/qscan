@@ -115,7 +115,9 @@ public class MainActivity extends AppCompatActivity implements Constant {
                 .setBarcodeFormats(Barcode.QR_CODE).build();
 
         this.cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(640, 520).build();
+                .setRequestedPreviewSize(820, 720)
+                .setAutoFocusEnabled(true)
+                .build();
 
         this.surfaceView = findViewById(R.id.main_surface_view);
 
@@ -194,6 +196,7 @@ public class MainActivity extends AppCompatActivity implements Constant {
 
                                     String newURL = BASE_URL_REST + qrURL.substring(34);
                                     responseTextView.setText("");
+                                    qrTextView.setText("");
                                     loadImg.setVisibility(View.VISIBLE);
                                     httpManager.execute(newURL, GET, token);
 
