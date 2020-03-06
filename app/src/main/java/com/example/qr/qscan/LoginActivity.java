@@ -17,7 +17,14 @@ import com.example.qr.qscan.network.HTTPManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements Constant {
+import static com.example.qr.qscan.constant.Constant.CREDENTIALS;
+import static com.example.qr.qscan.constant.Constant.LOGIN_URL;
+import static com.example.qr.qscan.constant.Constant.NO_AUTH;
+import static com.example.qr.qscan.constant.Constant.POST;
+import static com.example.qr.qscan.constant.Constant.SHARED_PREFERENCES;
+import static com.example.qr.qscan.constant.Constant.TOKEN_PREFERENCE;
+
+public class LoginActivity extends AppCompatActivity {
 
     TextInputEditText username;
     TextInputEditText password;
@@ -32,14 +39,13 @@ public class LoginActivity extends AppCompatActivity implements Constant {
         init();
     }
 
-    private void persistentLoginCheck(){
-
+    private void persistentLoginCheck() {
         SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES,
                 MODE_PRIVATE);
 
         String token = sharedPreferences.getString(TOKEN_PREFERENCE, "");
 
-        if(!token.equals("")) {
+        if (!token.equals("")) {
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             intent.putExtra(CREDENTIALS, token);
             startActivity(intent);
@@ -47,7 +53,7 @@ public class LoginActivity extends AppCompatActivity implements Constant {
         }
     }
 
-    private void init(){
+    private void init() {
         login = findViewById(R.id.login_btn);
         username = findViewById(R.id.login_username_tie);
         password = findViewById(R.id.login_password_tie);
@@ -56,9 +62,8 @@ public class LoginActivity extends AppCompatActivity implements Constant {
             @SuppressLint("StaticFieldLeak")
             @Override
             public void onClick(View v) {
-                if(!username.getText().toString().equals("") && !password.getText().toString().equals("")){
-
-                    httpManager = new HTTPManager(){
+                if (!username.getText().toString().equals("") && !password.getText().toString().equals("")) {
+                    httpManager = new HTTPManager() {
                         @Override
                         protected void onPostExecute(String s) {
                             try {
@@ -90,11 +95,10 @@ public class LoginActivity extends AppCompatActivity implements Constant {
                             "\"password\":\"" + password.getText().toString() + "\"}";
 
                     httpManager.execute(LOGIN_URL, POST, NO_AUTH, JSONCredentials);
-
                 } else {
-                    if(username.getText().toString().equals("")){
+                    if (username.getText().toString().equals("")) {
                         username.requestFocus();
-                    } else if(password.getText().toString().equals("")){
+                    } else if (password.getText().toString().equals("")) {
                         password.requestFocus();
                     }
                 }
